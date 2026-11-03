@@ -1,1 +1,40 @@
-
+name: DeploymentJob
+on: 
+    workflow_dispatch:
+    push:
+jobs:
+  Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: GetCode
+        uses: actions/checkout@v3
+      - name: InstallDependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+  Test:
+    needs: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: GetCode
+        uses: actions/checkout@v3
+      - name: InstallDependencies
+        run: npm ci
+      - name: Test
+        run: npm run test
+      - name: Build
+        run: npm run build
+      - name: Deploy
+        run: echo "Deploying Code..."
+  Build:
+    needs: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: GetCode
+        uses: actions/checkout@v3
+      - name: InstallDependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Deploy
+        run: echo "Deploying Code..."
