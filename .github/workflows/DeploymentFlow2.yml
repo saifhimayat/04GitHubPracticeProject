@@ -1,36 +1,65 @@
 name: DeploymentSequential
-on: 
-    workflow_dispatch:
-    push:
+
+on:
+  workflow_dispatch:
+  push:
+
 jobs:
-  Lint:
+  lint:
     runs-on: ubuntu-latest
+
     steps:
-      - name: GetCode
-        uses: actions/checkout@v3
-      - name: InstallDependencies
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
         run: npm ci
-      - name: Lint
+
+      - name: Run Lint
         run: npm run lint
-  Test:
-    needs: Lint
+
+  test:
+    needs: lint
     runs-on: ubuntu-latest
+
     steps:
-      - name: GetCode
-        uses: actions/checkout@v3
-      - name: InstallDependencies
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
         run: npm ci
-      - name: Test
-        run: npm run test
-  Build:
-    needs: Test
+
+      - name: Run Tests
+        run: npm test
+
+  build:
+    needs: test
     runs-on: ubuntu-latest
+
     steps:
-      - name: GetCode
-        uses: actions/checkout@v3
-      - name: InstallDependencies
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
         run: npm ci
-      - name: Build
+
+      - name: Build Application
         run: npm run build
-      - name: Deploy
+
+      - name: Deploy Application
         run: echo "Deploying Code..."
