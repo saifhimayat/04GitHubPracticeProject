@@ -1,4 +1,4 @@
-name: DeploymentJob
+name: DeploymentSequential
 on: 
     workflow_dispatch:
     push:
@@ -22,10 +22,6 @@ jobs:
         run: npm ci
       - name: Test
         run: npm run test
-      - name: Build
-        run: npm run build
-      - name: Deploy
-        run: echo "Deploying Code..."
   Build:
     needs: Test
     runs-on: ubuntu-latest
