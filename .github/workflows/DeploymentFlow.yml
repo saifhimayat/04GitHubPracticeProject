@@ -1,4 +1,4 @@
-name: DeploymentJob
+name: DeploymentParallel
 on: 
     workflow_dispatch:
     push:
